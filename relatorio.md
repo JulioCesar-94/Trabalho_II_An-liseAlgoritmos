@@ -7,6 +7,7 @@
 ## Famílias de grafos
 
 <!-- Descreva pelo menos três famílias e quatro tamanhos por família. -->
+Famílias: Grafo completo, árvore, Planar
 
 ## Resultados
 

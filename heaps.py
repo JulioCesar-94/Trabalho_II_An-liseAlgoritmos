@@ -106,24 +106,167 @@ class BinaryHeap:
 # --------------- Implementação da Heap binomial -----------------------------------------------------
 
 class BinomailNode:
-    def __init__(self, key):
+    """
+    Cria a estrutura do nó da arvore binomial: possui os campos da chave(distância) e vértice
+    Além disso, possui o grau do nó e ponteiros para o pai e os filhos da direita e esquerda
+    """
+    def __init__(self, key: float, vertex: int):
         self.key = key
+        self.vertex = vertex
+        self.degree = 0
+        self.parent = None
+        self.left = None
+        self.right = None
+
 
 class BinomialHeap:
     def __init__(self):
-        raise NotImplementedError
+        self.head = None
+        self.size = 0
+
+    def link(self, min_node: BinomailNode, max_node: BinomailNode):
+        """
+        Junta o min_node com o max_node
+        Fazendo com que o max_node vire o filho esquerdo de min_node
+        """
+        max_node.parent = min_node
+        max_node.right = max_node.left
+        min_node.left = max_node
+        min_node.degree += 1
+
+    def merge_roots(self, h1: BinomailNode, h2: BinomailNode) -> BinomailNode:
+        if not h1:
+            return h2
+        if not h2:
+            return h1
+
+        if h1.degree <= h2.degree:
+            new_head = h1
+            h1 = h1.right
+        else:
+            new_head = h2
+            h2 = h2.right
+        tail = new_head
+
+        while h1 and h2:
+            if h1.degree <= h2.degree:
+                tail.right = h1
+                h1 = h1.right
+            else:
+                tail.right = h2
+                h2 = h2.right
+            tail = tail.right
+
+        if h1:
+            tail.right = h1
+        if h2:
+            tail.right = h2
+
+        return new_head
+
+
+    def union_trees(self, new_node: BinomailNode):
+        """
+        Une o novo nó com a floresta da heap binomial
+        """
+        new_head = self.merge_roots(self.head, new_node)
+        if not new_head:
+            self.head = None
+            return
+
+        prev = None
+        curr = new_head
+        next_node = curr.right
+
+        while next_node:
+            if (curr.degree != next_node.degree) or (next_node.right and next_node.right.degree == curr.degree):
+                prev = curr
+                curr = next_node
+            else:
+                if curr.key <= next_node.key:
+                    curr.right = next_node.right
+                    self.link(curr, next_node)
+                else:
+                    if not prev:
+                        new_head = next_node
+                    else:
+                        prev.right = next_node
+                    self.link(next_node, curr)
+                    curr = next_node
+
+            next_node = curr.right
+
+        self.head = new_head
 
     def push(self, vertex: int, priority: float):
-        raise NotImplementedError
+        """
+        Insere um novo nó na heap binomial
+        """
+        new_element = BinomailNode(priority, vertex)
 
-    def decrease_key(self, handle, new_priority: float) -> None:
-        raise NotImplementedError
+        tree_B0 = BinomialHeap()
+        tree_B0.head = new_element
+        tree_B0.size = 1
+        self.union(new_element)
+        self.size += 1
+
+        return new_element
+        
+
+    def decrease_key(self, handle: BinomailNode, new_priority: float) -> None:
+        """
+        Diminui a prioridade do nó referenciado por handle
+        Lança Value Error caso a prioridade seja maior
+        """
+        if new_priority > handle.key:
+            raise ValueError
+
+        handle.key = new_priority
+        current = handle
+
+        while current.parent and current.key < current.parent.key:
+            current.key, current.parent.key = current.parent.key, current.key
+            current.vertex = current.parent.vertex = current.parent.vertex, current.key
+            current = current.parent
 
     def pop_min(self) -> tuple[int, float]:
-        raise NotImplementedError
+        """
+        Retorna o par da raiz de menor chava
+        Lança IndexError caso a heap esteja vazia
+        """
+        if self.head == None:
+            raise IndexError
+
+        min_node = self.head
+        min_prev = None
+        prev = self.head
+        current = self.head.right
+
+        while current:
+            if current.key < min_node.key:
+                min_node = current
+                min_prev = prev
+            prev = current
+            current = current.right
+
+        if min_prev:
+            min_prev.right = min_node.right
+        else:
+            self.head = min_node.right
+
+        son = min_node.left
+        new_head = None
+        while son:
+            son.right = new_head
+            son.parent = None
+            new_head = son
+            son = son.right
+
+        self.union_trees(new_head)
+        self.size -= 1
 
     def __len__(self) -> int:
-        raise NotImplementedError
+        return self.size
 
 # --------------- Implementação da Heap de Fibonacci --------------------------------------------------
 
