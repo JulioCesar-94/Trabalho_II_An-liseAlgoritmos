@@ -1,6 +1,7 @@
 """Implemente as três filas de prioridade sem usar heapq."""
 
 from __future__ import annotations
+import math
 
 # --------------- Implementação da Heap binária -----------------------------------------------------
 class BinaryHeapHandle:
@@ -211,7 +212,27 @@ class BinomialHeap:
         self.size += 1
 
         return new_element
-        
+
+    def remove_from_tree(self, node: BinomailNode):
+        """
+        Remove um nó de uma árvore
+        """
+        parent = node.parent
+        if not parent:
+            return
+
+        if parent.left == node:
+            parent.left = node.right
+        else:
+            curr = parent.left
+            while curr and curr.right != node:
+                curr = curr.right
+            if curr:
+                curr.right = node.right
+
+        parent.degree -= 1
+        node.parent = None
+        node.right = None
 
     def decrease_key(self, handle: BinomailNode, new_priority: float) -> None:
         """
@@ -224,10 +245,14 @@ class BinomialHeap:
         handle.key = new_priority
         current = handle
 
-        while current.parent and current.key < current.parent.key:
-            current.key, current.parent.key = current.parent.key, current.key
-            current.vertex, current.parent.vertex = current.parent.vertex, current.vertex
-            current = current.parent
+        if not handle.parent or handle.key >= handle.parent.key:
+            return
+
+        # Remove o handle atual da árvore
+        self.remove_from_tree(handle)
+
+        # Reinsere o handle na árvore para atualizar os ponteiros
+        self.union_trees(handle)
 
     def pop_min(self) -> tuple[int, float]:
         """
@@ -274,45 +299,219 @@ class BinomialHeap:
 # --------------- Implementação da Heap de Fibonacci --------------------------------------------------
 
 class FibonacciNode:
-    def __init__(self, key):
+    def __init__(self, key: float, vertex: int):
         self.key = key
+        self.vertex = vertex
+        self.parent = None
+        self.child = None
+        self.left = self
+        self.right = self
+        self.degree = 0
+        self.mark = False
 
 class FibonacciHeap:
     def __init__(self):
-        raise NotImplementedError
+        self.min_node = None
+        self.size = 0
+
+    def add_to_root_list(self, new_node: FibonacciNode):
+        """
+        Insere o nó na lista circular de raízes
+        """
+        if self.min_node == None:
+            self.min_node = new_node
+            new_node.left = new_node
+            new_node.right = new_node
+        else:
+            new_node.left = self.min_node.left
+            new_node.right = self.min_node
+            self.min_node.left.right = new_node
+            self.min_node.left = new_node
+
+
+    def remove_from_root_list(self, node:FibonacciNode):
+        """
+        Remove um nó da lista circular de raízes
+        """
+        node.left.right = node.right
+        node.right.left = node.left
+
+    def link_nodes(self, y: FibonacciNode, x: FibonacciNode):
+        """
+        Remove y da lista de raízes e faz com que seja filho de x
+        """
+        self.remove_from_root_list(y)
+        y.parent = x
+        if x.child == None:
+            x.child = y
+            y.left = y
+            y.right = y
+        else:
+            y.left = x.child.left
+            y.right = x.child
+            x.child.left.right = y
+            x.child.left = y
+
+        x.degree += 1
+        y.mark = False
+
+    def consolidate(self):
+        """
+        Consolida as árvores de mesmo grau na lista de raízes
+        Evitar que a lista de raízes fique maior
+        """
+        max_degree = 1
+        if self.size > 0:
+            max_degree = int(2*math.log2(self.size)) + 5
+
+        A = [None]*max_degree
+
+        nodes = []
+        if self.min_node:
+            current = self.min_node
+            nodes.append(current)
+            current = current.right
+            while current != self.min_node:
+                nodes.append(current)
+                current = current.right
+
+        for node in nodes:
+            x = node
+            d = x.degree
+            while d < len(A) and A[d] != None:
+                y = A[d]
+                if x.key > y.key:
+                    x, y = y, x
+                self.link_nodes(y, x)
+                A[d] = None
+                d += 1
+
+            if d < len(A):
+                A[d] = x
+
+        self.min_node = None
+        for i in range(len(A)):
+            if A[i] != None:
+                if self.min_node == None:
+                    self.min_node = A[i]
+                    A[i].left = A[i]
+                    A[i].right = A[i]
+                else:
+                    self.add_to_root_list(A[i])
+                    if A[i].key < self.min_node.key:
+                        self.min_node = A[i]
+
+    def cut(self, x: FibonacciNode, y:FibonacciNode):
+        """
+        Remove x da lista de filhos do y e coloca-o na lista de raízes
+        """
+        if x == x.right:
+            y.child = None
+
+        else:
+            # Remoção do x da lista de filhos do y (reorganização de ponteiros)
+            x.left.right = x.right
+            x.right.left = x.left
+            if y.child == x:
+                y.child = x.right
+
+        # Insere o x na lista de raízes
+        y.degree -= 1
+        self.add_to_root_list(x)
+        x.parent = None
+        x.mark = False
+
+    def cascading_cut(self, node: FibonacciNode):
+        z = node.parent
+        if z != None:
+            if node.mark == False:
+                node.mark = True
+            else:
+                self.cut(node, z)
+                self.cascading_cut(z)
+        
 
     def push(self, vertex: int, priority: float):
-        raise NotImplementedError
+        """
+        Insere o novo elemento na heap de Fibonacci em complexidade O(1)
+        Retorna o nó como identificador/Handle
+        """
+        new_element = FibonacciNode(priority, vertex)
+        self.add_to_root_list(new_element)
+        if self.min_node == None or new_element.key < self.min_node.key:
+            self.min_node = new_element
 
-    def decrease_key(self, handle, new_priority: float) -> None:
-        raise NotImplementedError
+        self.size += 1
+        return new_element
+
+    def decrease_key(self, handle: FibonacciNode, new_priority: float) -> None:
+        """
+        Atualiza a prioridade de um Handle para um menor
+        Se tentar aumentar a prioridade, retorna um ValueError
+        """
+        if new_priority > handle.key:
+            raise ValueError
+
+        handle.key = new_priority
+        y = handle.parent
+        if y != None and handle.key < y.key:
+            self.cut(handle, y)
+            self.cascading_cut(y)
+
+        if handle.key < self.min_node.key:
+            self.min_node = handle
 
     def pop_min(self) -> tuple[int, float]:
-        raise NotImplementedError
+        """
+        Extrai o menor elemento e reajusta a estrutra complexidade logarítmica amortizada
+        """
+        if self.min_node == None:
+            raise IndexError
+
+        z = self.min_node
+
+        # Adiciona todos os filhos de min_node à lista de raízes
+        if z.child != None:
+            children = []
+            current = z.child
+            children.append(current)
+            current = current.right
+            while current != z.child:
+                children.append(current)
+                current = current.right
+
+            for x in children:
+                self.add_to_root_list(x)
+                x.parent = None
+
+        # Remove o min_node da lista de raízes
+        self.remove_from_root_list(z)
+
+        # Consolida das árvores de mesmo grau (maior 'trabalho' e custo)
+        if z == z.right:
+            self.min_node = None
+        else:
+            self.min_node = z.right
+            self.consolidate()
+
+        self.size -= 1
+        return z.vertex, z.key
 
     def __len__(self) -> int:
-        raise NotImplementedError
+        return self.size
 
 
 #------------ Testes ------------
 
-
-"""
 heap = BinomialHeap()
 
-n1 = heap.push(10, 5.0)
-n2 = heap.push(20, 2.0)
-n3 = heap.push(30, 8.0)
-n4 = heap.push(40, 1.0)
+v1 = heap.push(1, 7.0)
+v2 = heap.push(2, 9.0)
+v3 = heap.push(3, 5.0)
 
-print(heap.__len__())
-
-heap.decrease_key(n3, 0.5)
+heap.decrease_key(v2, 2.0)
+heap.decrease_key(v3, 1.0)
 
 print(heap.pop_min())
 print(heap.pop_min())
 print(heap.pop_min())
-print(heap.pop_min())
-
-print(heap.__len__())
-"""
