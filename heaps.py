@@ -130,7 +130,7 @@ class BinomialHeap:
         Fazendo com que o max_node vire o filho esquerdo de min_node
         """
         max_node.parent = min_node
-        max_node.right = max_node.left
+        max_node.right = min_node.left
         min_node.left = max_node
         min_node.degree += 1
 
@@ -207,7 +207,7 @@ class BinomialHeap:
         tree_B0 = BinomialHeap()
         tree_B0.head = new_element
         tree_B0.size = 1
-        self.union(new_element)
+        self.union_trees(new_element)
         self.size += 1
 
         return new_element
@@ -226,7 +226,7 @@ class BinomialHeap:
 
         while current.parent and current.key < current.parent.key:
             current.key, current.parent.key = current.parent.key, current.key
-            current.vertex = current.parent.vertex = current.parent.vertex, current.key
+            current.vertex, current.parent.vertex = current.parent.vertex, current.vertex
             current = current.parent
 
     def pop_min(self) -> tuple[int, float]:
@@ -257,13 +257,16 @@ class BinomialHeap:
         son = min_node.left
         new_head = None
         while son:
+            next_son = son.right
             son.right = new_head
             son.parent = None
             new_head = son
-            son = son.right
+            son = next_son
 
         self.union_trees(new_head)
         self.size -= 1
+
+        return min_node.vertex, min_node.key
 
     def __len__(self) -> int:
         return self.size
@@ -292,3 +295,24 @@ class FibonacciHeap:
 
 
 #------------ Testes ------------
+
+
+"""
+heap = BinomialHeap()
+
+n1 = heap.push(10, 5.0)
+n2 = heap.push(20, 2.0)
+n3 = heap.push(30, 8.0)
+n4 = heap.push(40, 1.0)
+
+print(heap.__len__())
+
+heap.decrease_key(n3, 0.5)
+
+print(heap.pop_min())
+print(heap.pop_min())
+print(heap.pop_min())
+print(heap.pop_min())
+
+print(heap.__len__())
+"""
