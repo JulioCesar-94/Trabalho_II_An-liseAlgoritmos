@@ -500,18 +500,18 @@ class FibonacciHeap:
     def __len__(self) -> int:
         return self.size
 
+# -------------- Classe que utiliza instancia uma heap e utiliza os métodos da interface pública ---------------
 
-#------------ Testes ------------
+def PriorityQueue(heap_class='binary'):
 
-heap = BinomialHeap()
+    types = {
+        'binary': BinaryHeap,
+        'binomial': BinomialHeap,
+        'fibonacci': FibonacciHeap
+    }
 
-v1 = heap.push(1, 7.0)
-v2 = heap.push(2, 9.0)
-v3 = heap.push(3, 5.0)
+    if heap_class not in types:
+        raise Exception
 
-heap.decrease_key(v2, 2.0)
-heap.decrease_key(v3, 1.0)
+    return types[heap_class]()
 
-print(heap.pop_min())
-print(heap.pop_min())
-print(heap.pop_min())

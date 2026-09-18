@@ -2,16 +2,16 @@ import unittest
 
 # Programa de teste básico para verificar o algoritmo das heaps
 
-from heaps import BinomialHeap, BinaryHeap, FibonacciHeap
+from heaps import PriorityQueue
 
 class TestPriorityQueues(unittest.TestCase):
 
     def setUp(self):
         # Instancia as 3 heaps para rodar cada teste em todas elas
         self.heaps = {
-            "BinaryHeap": BinaryHeap(),
-            "BinomialHeap": BinomialHeap(),
-            "FibonacciHeap": FibonacciHeap()
+            "BinaryHeap": PriorityQueue('binary'),
+            "BinomialHeap": PriorityQueue('binomial'),
+            "FibonacciHeap": PriorityQueue('fibonacci')
         }
 
     def test_pop_min_empty_raises_index_error(self):
