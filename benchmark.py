@@ -1,5 +1,26 @@
 """Experimento reproduzível; complete e gere os dados do relatório."""
 
+"""
+
+Citações:
+
+
+Modelo Erdős-Rényi G(n, p):
+    P. ERDŐS; A. RÉNYI.
+    On random graphs. I.
+    Publicationes Mathematicae, v. 6, n. 3-4,
+    p. 290-297, 1959.
+
+Algoritmo de Wilson:
+    WILSON, David Bruce.
+    Generating random spanning trees more quickly than the cover time.
+    Proceedings of the twenty-eighth annual ACM symposium on Theory of computing - STOC '96,
+    p. 296-303, 1996.
+
+"""
+
+
+
 from __future__ import annotations
 
 import random
