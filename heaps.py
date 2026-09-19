@@ -5,9 +5,9 @@ import math
 
 """
 Referências utilizadas:
+- CORMEN, Thomas H. et al. Algoritmos: teoria e prática. 3. ed. Rio de Janeiro: Elsevier, 2012.
 
-CORMEN, Thomas H. et al. Algoritmos: teoria e prática. 3. ed. Rio de Janeiro: Elsevier, 2012.
-
+- CORMEN, Thomas H.; LEISERSON, Charles E.; RIVEST, Ronald L.; STEIN, Clifford. Algoritmos: teoria e prática. 2. ed. Rio de Janeiro: Campus, 2002.
 """
 
 # --------------- Implementação da Heap binária -----------------------------------------------------
@@ -144,6 +144,9 @@ class BinomialHeap:
         min_node.degree += 1
 
     def merge_roots(self, h1: BinomailNode, h2: BinomailNode) -> BinomailNode:
+        """
+        Juntar duas árvores binomiais, deixando a árvore com menor prioridade na raiz como pai
+        """
         if not h1:
             return h2
         if not h2:
