@@ -1,3 +1,13 @@
+from __future__ import annotations
+
+import random
+import statistics
+from dijkstra import Graph, dijkstra
+from heaps import PriorityQueue
+import time
+import math
+
+
 """Experimento reproduzível; complete e gere os dados do relatório."""
 
 """
@@ -21,14 +31,6 @@ Algoritmo de Wilson:
 
 
 
-from __future__ import annotations
-
-import random
-import statistics
-from dijkstra import Graph, dijkstra
-from heaps import PriorityQueue
-import time
-import math
 
 SEED = 2027
 DAGNodeProbability = 0.3
