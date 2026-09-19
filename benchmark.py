@@ -20,7 +20,7 @@ def gerar_grafoCompleto(n: int):
     graph = [[] for _ in range(n)]
     for i in range(n):
         for j in range(n):
-            if i < j:
+            if i != j:
                 weight = round(random.uniform(1.0, 100.0), 1)
                 graph[i].append((j, weight))
                 graph[j].append((i, weight))
