@@ -3,15 +3,22 @@
 from __future__ import annotations
 import math
 
+"""
+Referências utilizadas:
+
+CORMEN, Thomas H. et al. Algoritmos: teoria e prática. 3. ed. Rio de Janeiro: Elsevier, 2012.
+
+"""
+
 # --------------- Implementação da Heap binária -----------------------------------------------------
 class BinaryHeapHandle:
     """
-    Identificador opaco possui os atributos key (prioridade/distância até o nó), vertex (valor/vértice)
+    Identificador opaco possui os atributos dist (prioridade/distância até o nó), vertex (valor/vértice)
     e o índice que revela a posição na heap.
     """
-    def __init__(self, key, value, idx):
-        self.key = key
-        self.vertex = value
+    def __init__(self, dist, vertex, idx):
+        self.dist = dist
+        self.vertex = vertex
         self.idx = idx
 
 class BinaryHeap:
@@ -32,7 +39,7 @@ class BinaryHeap:
         """
         while idx > 0:
             parent = (idx - 1) // 2
-            if self.heap[idx].key < self.heap[parent].key:
+            if self.heap[idx].dist < self.heap[parent].dist:
                 self.swap_nodes(parent, idx)
                 idx = parent
             else:
@@ -48,9 +55,9 @@ class BinaryHeap:
             left = 2*idx + 1
             right = 2*idx + 2
 
-            if left < size and self.heap[left].key < self.heap[child].key:
+            if left < size and self.heap[left].dist < self.heap[child].dist:
                 child = left
-            if right < size and self.heap[right].key < self.heap[child].key:
+            if right < size and self.heap[right].dist < self.heap[child].dist:
                 child = right
 
             if child != idx:
@@ -72,11 +79,12 @@ class BinaryHeap:
     def decrease_key(self, handle: BinaryHeapHandle, new_priority: float) -> None:
         """
         Diminui a chave do Handle referenciado
+        Se a heap estiver vazia, lança ValueError
         """
-        if new_priority > handle.key:
+        if new_priority > handle.dist:
             raise ValueError
 
-        handle.key = new_priority
+        handle.dist = new_priority
         self.heapify_up(handle.idx)
 
     def pop_min(self) -> tuple[int, float]:
@@ -96,7 +104,7 @@ class BinaryHeap:
             self.heap[0].idx = 0
             self.heapify_down(0)
 
-        return minimum.vertex, minimum.key
+        return minimum.vertex, minimum.dist
 
 
     def __len__(self) -> int:
@@ -111,8 +119,8 @@ class BinomailNode:
     Cria a estrutura do nó da arvore binomial: possui os campos da chave(distância) e vértice
     Além disso, possui o grau do nó e ponteiros para o pai e os filhos da direita e esquerda
     """
-    def __init__(self, key: float, vertex: int):
-        self.key = key
+    def __init__(self, dist: float, vertex: int):
+        self.dist = dist
         self.vertex = vertex
         self.degree = 0
         self.parent = None
@@ -127,8 +135,8 @@ class BinomialHeap:
 
     def link(self, min_node: BinomailNode, max_node: BinomailNode):
         """
-        Junta o min_node com o max_node
-        Fazendo com que o max_node vire o filho esquerdo de min_node
+        O nó de menor prioridade vira o pai do nó de maior prioridade
+        que se torna filho esquerdo
         """
         max_node.parent = min_node
         max_node.right = min_node.left
@@ -184,7 +192,7 @@ class BinomialHeap:
                 prev = curr
                 curr = next_node
             else:
-                if curr.key <= next_node.key:
+                if curr.dist <= next_node.dist:
                     curr.right = next_node.right
                     self.link(curr, next_node)
                 else:
@@ -239,13 +247,13 @@ class BinomialHeap:
         Diminui a prioridade do nó referenciado por handle
         Lança Value Error caso a prioridade seja maior
         """
-        if new_priority > handle.key:
+        if new_priority > handle.dist:
             raise ValueError
 
-        handle.key = new_priority
+        handle.dist = new_priority
         current = handle
 
-        if not handle.parent or handle.key >= handle.parent.key:
+        if not handle.parent or handle.dist >= handle.parent.dist:
             return
 
         # Remove o handle atual da árvore
@@ -268,7 +276,7 @@ class BinomialHeap:
         current = self.head.right
 
         while current:
-            if current.key < min_node.key:
+            if current.dist < min_node.dist:
                 min_node = current
                 min_prev = prev
             prev = current
@@ -291,7 +299,7 @@ class BinomialHeap:
         self.union_trees(new_head)
         self.size -= 1
 
-        return min_node.vertex, min_node.key
+        return min_node.vertex, min_node.dist
 
     def __len__(self) -> int:
         return self.size
@@ -299,8 +307,8 @@ class BinomialHeap:
 # --------------- Implementação da Heap de Fibonacci --------------------------------------------------
 
 class FibonacciNode:
-    def __init__(self, key: float, vertex: int):
-        self.key = key
+    def __init__(self, dist: float, vertex: int):
+        self.dist = dist
         self.vertex = vertex
         self.parent = None
         self.child = None
@@ -380,7 +388,7 @@ class FibonacciHeap:
             d = x.degree
             while d < len(A) and A[d] != None:
                 y = A[d]
-                if x.key > y.key:
+                if x.dist > y.dist:
                     x, y = y, x
                 self.link_nodes(y, x)
                 A[d] = None
@@ -398,7 +406,7 @@ class FibonacciHeap:
                     A[i].right = A[i]
                 else:
                     self.add_to_root_list(A[i])
-                    if A[i].key < self.min_node.key:
+                    if A[i].dist < self.min_node.dist:
                         self.min_node = A[i]
 
     def cut(self, x: FibonacciNode, y:FibonacciNode):
@@ -438,7 +446,7 @@ class FibonacciHeap:
         """
         new_element = FibonacciNode(priority, vertex)
         self.add_to_root_list(new_element)
-        if self.min_node == None or new_element.key < self.min_node.key:
+        if self.min_node == None or new_element.dist < self.min_node.dist:
             self.min_node = new_element
 
         self.size += 1
@@ -449,16 +457,16 @@ class FibonacciHeap:
         Atualiza a prioridade de um Handle para um menor
         Se tentar aumentar a prioridade, retorna um ValueError
         """
-        if new_priority > handle.key:
+        if new_priority > handle.dist:
             raise ValueError
 
-        handle.key = new_priority
+        handle.dist = new_priority
         y = handle.parent
-        if y != None and handle.key < y.key:
+        if y != None and handle.dist < y.dist:
             self.cut(handle, y)
             self.cascading_cut(y)
 
-        if handle.key < self.min_node.key:
+        if handle.dist < self.min_node.dist:
             self.min_node = handle
 
     def pop_min(self) -> tuple[int, float]:
@@ -470,7 +478,7 @@ class FibonacciHeap:
 
         z = self.min_node
 
-        # Adiciona todos os filhos de min_node à lista de raízes
+        # Adiciona todos os filhos de min_node à lista de raízes (Promove os filhos)
         if z.child != None:
             children = []
             current = z.child
@@ -487,7 +495,7 @@ class FibonacciHeap:
         # Remove o min_node da lista de raízes
         self.remove_from_root_list(z)
 
-        # Consolida das árvores de mesmo grau (maior 'trabalho' e custo)
+        # Consolida das árvores de mesmo grau
         if z == z.right:
             self.min_node = None
         else:
@@ -495,7 +503,7 @@ class FibonacciHeap:
             self.consolidate()
 
         self.size -= 1
-        return z.vertex, z.key
+        return z.vertex, z.dist
 
     def __len__(self) -> int:
         return self.size
