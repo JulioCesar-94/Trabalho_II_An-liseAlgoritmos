@@ -35,7 +35,7 @@ def gerar_grafoDAG(n: int):
 def gerar_grafoEsparso(n: int):
     pass
 
-
+# Mede a mediana e o desvio mediano em 7 execuções do algoritmo de dijkstra, dado um grafo e um tipo de heap
 def medir(graph: Graph, heap: str, repeticoes: int = 7) -> tuple[float, float]:
     """Retorne mediana e desvio absoluto mediano, em segundos."""
     tempos = []
@@ -50,7 +50,6 @@ def medir(graph: Graph, heap: str, repeticoes: int = 7) -> tuple[float, float]:
 
 def main() -> None:
     random.seed(SEED)
-    print(gerar_grafoCompleto(5))
 
     for tam in tam_grafos:
         for tipo in fam_grafos:
