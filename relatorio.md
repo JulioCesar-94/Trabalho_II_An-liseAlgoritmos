@@ -46,13 +46,13 @@ gráficos para melhor análise em 'graficos.py', armazenados em 'imagens/'.
 
 Há 2 tipos de gráficos em 'imagens/':
 
-### 1.Relação DK/Push: Gráfico adimensional que mostra a razão entre o número de operações de decrease-key pelas operações de push, quantificando a densidade do tipo      de grafo de acordo com as requisições ao heap.
+### 1.Relação DK/Push 
+Gráfico adimensional que mostra a razão entre o número de operações de decrease-key pelas operações de push, quantificando a densidade do tipo      de grafo de acordo com as requisições ao heap.
 
 ![Relação DK-Push](imagens/Relação%20DK-Push.png)
 
-    2. Os plots de tempo e variação por tamanho de grafo, separados por tipo de grafo,
-    *FALTANDO COISA AQUI*
-    . Unidades em segundos
+### 2.Os Tempo e Dispersão por Família
+Medidos em segundos (s), os gráficos abaixo apresentam o tempo mediano (desempenho absoluto) e a variação mediana (estabilidade) para cada família de grafo:
 
 
 
