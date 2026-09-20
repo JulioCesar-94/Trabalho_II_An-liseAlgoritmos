@@ -49,7 +49,7 @@ Há 2 tipos de gráficos em 'imagens/':
     1. O gráfico que mostra a relação do número operações decrease-key por operações operações
     push, quantificando, aproximadamente, a densidade do tipo de grafo. Unidades adimensionais
 
-    ![Relação DK-Push](imagens/Relação%20DK-Push.png)
+![Relação DK-Push](imagens/Relação%20DK-Push.png)
 
     2. Os plots de tempo e variação por tamanho de grafo, separados por tipo de grafo,
     *FALTANDO COISA AQUI*
