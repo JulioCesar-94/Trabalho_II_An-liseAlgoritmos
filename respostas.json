@@ -16,6 +16,6 @@
     "inserir": "1",
     "diminuir_chave": "1",
     "extrair_minimo": "log_n",
-    "dijkstra": "Pm_mais_n_vezes_log_n"
+    "dijkstra": "m_mais_n_log_n"
   }
 }
