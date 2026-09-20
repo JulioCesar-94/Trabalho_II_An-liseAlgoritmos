@@ -37,7 +37,8 @@ SEED = 2027
 DAGNodeProbability = 0.3
 
 heap_class = ['binary', 'binomial', 'fibonacci']
-tam_grafos = [10, 100] + [i for i in range(200, 3001, 200)]
+#tam_grafos = [10, 100] + [i for i in range(200, 3001, 200)]
+tam_grafos = [1000, 2500, 3000, 4000]
 fam_grafos = [['Completo', 'gerar_grafoCompleto'],
               ['Acíclico direcionado', 'gerar_grafoDAG'],
               ['Gerador', 'gerar_arvoreGeradora'],
@@ -126,8 +127,8 @@ def gerar_grafoVazio(n: int):
 
 
 
-# Mede a mediana e o desvio mediano em 7 execuções do algoritmo de dijkstra, dado um grafo e um tipo de heap
-def medir(graph: Graph, heap: str, repeticoes: int = 7) -> tuple[float, float]:
+# Mede a mediana e o desvio mediano em 10 execuções do algoritmo de dijkstra, dado um grafo e um tipo de heap
+def medir(graph: Graph, heap: str, repeticoes: int = 10) -> tuple[float, float]:
     """Retorne mediana e desvio absoluto mediano, em segundos."""
     tempos = []
     for _ in range(repeticoes):
