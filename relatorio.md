@@ -46,8 +46,7 @@ gráficos para melhor análise em 'graficos.py', armazenados em 'imagens/'.
 
 Há 2 tipos de gráficos em 'imagens/':
 
-    1. O gráfico que mostra a relação do número operações decrease-key por operações operações
-    push, quantificando, aproximadamente, a densidade do tipo de grafo. Unidades adimensionais
+    1.Relação DK/Push: Gráfico adimensional que mostra a razão entre o número de operações de decrease-key pelas operações de push, quantificando a densidade do tipo      de grafo de acordo com as requisições ao heap.
 
 ![Relação DK-Push](imagens/Relação%20DK-Push.png)
 
