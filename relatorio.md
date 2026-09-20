@@ -56,6 +56,15 @@ Mede a velocidade e o desempenho absoluto do algoritmo em segundos.
 ## Grafo Gerador
 ![Tempo mediano (Gerador)](imagens/Tempo%20mediano%20x%20Tamanho%20de%20grafo%20(Gerador).png)
 
+## Grafo Vazio
+![Tempo mediano (Vazia)](imagens/Tempo%20mediano%20x%20Tamanho%20de%20grafo%20(Vazia).png)
+
+## Grafo Acíclico Direcionado (DAG)
+![Tempo mediano (Acíclico Direcionado)](imagens/Tempo%20mediano%20x%20Tamanho%20de%20grafo%20(Acíclico%20direcionado).png)
+
+## Grafo Completo
+![Tempo mediano (Completo)](imagens/Tempo%20mediano%20x%20Tamanho%20de%20grafo%20(Completo).png)
+
 ### 3.Variação mediana
 Mede a dispersão estatística e a estabilidade das 10 repetições em segundos.
 
