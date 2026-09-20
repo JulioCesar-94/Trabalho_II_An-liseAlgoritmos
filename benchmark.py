@@ -157,7 +157,7 @@ def main() -> None:
             print(f"Grafo: {tipo[0]} com tamanho {tam}")
             for heap in heap_class:
                 t, dt, push, pop, dk = medir(Graph, heap)
-                print(f"{heap}: t={t}s, dt={dt}s, push={push}, pop={pop}, dk={dk}")
+                print(f"{heap}: t={t:.10f}s, dt={dt:.10f}s, push={push}, pop={pop}, dk={dk}")
                 data.append([tipo[0], heap, tam, t, dt, push, pop, dk])
             print()
 

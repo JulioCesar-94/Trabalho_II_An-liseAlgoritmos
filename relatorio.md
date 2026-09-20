@@ -20,23 +20,47 @@ Famílias:
 
     Grafo Acíclico Direcionado/Directed Acyclic Graph:
         Grafo conectado acíclico e direcionado,
-        E ~ V^2
+        E ~ V^2,
         Implementação: Erdős–Rényi G(n, p) Model, com p = 0.3
+
+    Grafo Vazio:
+        Grafo sem arestas,
+        E = 0
 
 
 Tamanhos:
-    Foram utilizados grafos formados por 10, 100, 500 e 1000 nós para testar os heaps em
-    execuções de Djikstra em diferentes tipos de grafos com diferentes ordens de magnitude
-    de tamanho
+    Foram utilizados grafos formados por 10, 100, 250, 500, 750, 1000, 1500, 2000, 2500 nós para
+    testar os heaps em execuções de Djikstra em diferentes tipos de grafos com diferentes ordens
+    de magnitude de tamanho, verificando complexidades de dijkstra e heaps. Tamanhos escolhidos
+    também são númerosos e uniformemente espaçados o suficiente para formarem gráficos capazes de
+    melhor visualizar as diferenças de complexidade.
 
 
 ## Resultados
 
 <!-- Inclua unidades e dispersão. -->
 
+Tabela 'benchmarking.csv' é criada ao executar 'benchmark.py', tabela então transformada em
+gráficos para melhor análise em ''.
+Os dados medidos e armazenados foram:
+    Tamanho: Medida adimensional, representa a quantidade de arestas geradas no grafo.
+    Tempo mediano: Medida em segundos, representa duração mediana dos tempos de execução de determinado grafo, heap, tamanho.
+    Variação mediana: Medida em segundos, representa a mediana das diferenças entre cada execução e o tempo mediano.
+    Push, Pop, Decrease Key: Medida adimensional, representa a quantidade de operações do tipo executadas.
+
+
 ## Discussão
 
 <!-- Relacione resultados, operações dominantes e análise assintótica. -->
+
+A efetividade de cada tipo de heap depende altamente da família do tamanho do grafo utilizado
+no algoritom de Djikstra, não necessariamente seguindo a eficiência sugerida pela complexidade
+assintótica. O tipo de família de grafo afeta a distribuição de arestas e, mais importantemente,
+a densidade do grafo gerado, afetando a fração em que operações de decrease_key representam com
+o total de operações de heap.
+Para grafos esparsos como vazios e árvores geradoras, o heap binário é significativamente mais rápido em todos
+os tamanhos
+
 
 ## Limitações e ameaças à validade
 
