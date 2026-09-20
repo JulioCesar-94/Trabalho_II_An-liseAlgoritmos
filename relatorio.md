@@ -3,7 +3,7 @@
 ## Ambiente e protocolo
 
 <!-- Descreva máquina, Python, semente, aquecimento e repetições. -->
-O ambiente em que esse trabalho foi feito os experimentos é numa máquina com sistema operacional Linux Ubuntu 24.04.4 LTS, com a versão do Python 3.13.12, semente de 2027 e cada experimento será realizado 10 vezes, extraindo a mediana e o desvio mediano.
+O ambiente utilizado nos experimentos possui sistema operacional Linux Ubuntu 24.04.4 LTS, com Python 3.13.12 e semente 2027. Para cada combinação de família de grafo, tamanho e heap, foram realizadas 3 rodadas de aquecimento, descartadas da análise, para garantir a estabilidade das medições, seguidas de 10 repetições cronometradas, das quais foram extraídos a mediana e o desvio mediano.
 
 ## Famílias de grafos
 
@@ -82,6 +82,7 @@ Mede a dispersão estatística e a estabilidade das 10 repetições em segundos.
 
 Podemos observar que nos grafos vazio e gerador, o heap binário se apresenta como o mais eficiente, possuindo os menores tempos de execução e uma variação muito pequena. No grafo acíclico direcionado, o heap binomial apresenta os menores tempos medianos, enquanto o fibonacci apresenta o pior desempenho. Por fim, no grafo completo, os heaps binomial e fibonacci conseguem superar a eficiência do binário no maior tamanho testado (4000 nós), apresentando menores tempos medianos. Além disso, o gráfico de variação do grafo completo revela um pico agudo de instabilidade para o heap binário nesse exato tamanho, contrastando com a estabilidade mantida pelas outras duas estruturas.
 
+Nos grafos vazio e gerador, o heap binário apresentou os menores tempos medianos em todos os tamanhos testados, com a menor dispersão no grafo gerador. No grafo acíclico direcionado, binário e binomial ficaram praticamente empatados, com leve vantagem do binomial em 4000 nós, enquanto o Fibonacci apresentou o pior desempenho em todos os tamanhos. No grafo completo, os três heaps tiveram tempos muito próximos, com o binário ligeiramente mais lento em 1000 e 4000 nós, diferença pequena diante da dispersão. Nesse mesmo grafo, em 4000 nós, o binário apresentou um pico de variação (~0,17 s), contrastando com a dispersão das outras duas estruturas (~0,01 s).
 
 
 
