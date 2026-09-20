@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from itertools import count
 from typing import Type
 from heaps import PriorityQueue
 import math
@@ -12,6 +13,11 @@ Graph = Sequence[Sequence[tuple[int, float]]]
 
 def dijkstra(graph: Graph, source: int, heap_class: PriorityQueue):
     """Retorne (distancias, predecessores) usando heap_class."""
+
+    # Inicializa contadores de operações
+    countPush = 0
+    countPop = 0
+    countDecreaseKey = 0
 
     # Inicializa os vetores de distâncias e predecessores
     dist = [math.inf]*len(graph)
@@ -25,10 +31,12 @@ def dijkstra(graph: Graph, source: int, heap_class: PriorityQueue):
     handles = {}
     for c in range(len(graph)):
         handles[c] = heap_class.push(c, dist[c])
+        countPush += 1
 
     while len(heap_class) > 0:
         # Extrai o elemento de menor prioridade
         u, d = heap_class.pop_min()
+        countPop += 1
 
         # Se tiver algum elemento cujo d == inf, esse nó é inalcançável pelo source
         if d == math.inf:
@@ -43,6 +51,7 @@ def dijkstra(graph: Graph, source: int, heap_class: PriorityQueue):
                 dist[v] = dist[u] + w
                 pred[v] = u
                 heap_class.decrease_key(handles[v], dist[v])
+                countDecreaseKey += 1
 
-    return dist, pred
+    return dist, pred, countPush, countPop, countDecreaseKey
 

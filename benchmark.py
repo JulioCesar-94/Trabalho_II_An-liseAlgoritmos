@@ -6,6 +6,7 @@ from dijkstra import Graph, dijkstra
 from heaps import PriorityQueue
 import time
 import math
+import csv
 
 
 """Experimento reproduzível; complete e gere os dados do relatório."""
@@ -36,7 +37,7 @@ SEED = 2027
 DAGNodeProbability = 0.3
 
 heap_class = ['binary', 'binomial', 'fibonacci']
-tam_grafos = [10, 100, 500, 1000]
+tam_grafos = [10, 100, 250, 500, 750, 1000, 1500, 2000, 2500]
 fam_grafos = [['Completo', 'gerar_grafoCompleto'],
               ['Acíclico direcionado', 'gerar_grafoDAG'],
               ['Gerador', 'gerar_arvoreGeradora']]
@@ -124,15 +125,20 @@ def medir(graph: Graph, heap: str, repeticoes: int = 7) -> tuple[float, float]:
     tempos = []
     for _ in range(repeticoes):
         inicio = time.perf_counter()
-        dijkstra(graph, 0, PriorityQueue(heap))
+        _, _, cPush, cPop, cDK = dijkstra(graph, 0, PriorityQueue(heap))
         tempos.append(time.perf_counter() - inicio)
     mediana = statistics.median(tempos)
     mad = statistics.median(abs(t - mediana) for t in tempos)
-    return mediana, mad
+    return mediana, mad, cPush, cPop, cDK
 
 
 def main() -> None:
     random.seed(SEED)
+
+    # Estrutura de dados para .csv
+    data = [
+        ["Grafo", "Heap", "Tamanho", "Tempo mediano", "Variação mediana", "Push", "Pop", "Decrease Key"],
+    ]
 
     for tam in tam_grafos:
         for tipo in fam_grafos:
@@ -143,10 +149,16 @@ def main() -> None:
 
             print(f"Grafo: {tipo[0]} com tamanho {tam}")
             for heap in heap_class:
-                print(f"{heap}: {medir(Graph, heap)}")
+                t, dt, push, pop, dk = medir(Graph, heap)
+                print(f"{heap}: t={t}s, dt={dt}s, push={push}, pop={pop}, dk={dk}")
+                data.append([tipo[0], heap, tam, t, dt, push, pop, dk])
             print()
+
+    # Escrever em .csv
+    with open("benchmarking.csv", "w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerows(data)
 
 
 if __name__ == "__main__":
     main()
-
