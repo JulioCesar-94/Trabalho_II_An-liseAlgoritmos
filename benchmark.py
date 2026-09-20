@@ -37,7 +37,7 @@ SEED = 2027
 DAGNodeProbability = 0.3
 
 heap_class = ['binary', 'binomial', 'fibonacci']
-tam_grafos = [10, 100] + [i for i in range(200, 2001, 200)]
+tam_grafos = [10, 100] + [i for i in range(200, 3001, 200)]
 fam_grafos = [['Completo', 'gerar_grafoCompleto'],
               ['Acíclico direcionado', 'gerar_grafoDAG'],
               ['Gerador', 'gerar_arvoreGeradora'],

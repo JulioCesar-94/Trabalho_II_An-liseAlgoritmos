@@ -42,11 +42,16 @@ Tamanhos:
 
 Tabela 'benchmarking.csv' é criada ao executar 'benchmark.py', tabela então transformada em
 gráficos para melhor análise em 'graficos.py', armazenados em 'img/'.
-Os dados medidos e armazenados foram:
-    Tamanho: Medida adimensional, representa a quantidade de arestas geradas no grafo.
-    Tempo mediano: Medida em segundos, representa duração mediana dos tempos de execução de determinado grafo, heap, tamanho.
-    Variação mediana: Medida em segundos, representa a mediana das diferenças entre cada execução e o tempo mediano.
-    Push, Pop, Decrease Key: Medida adimensional, representa a quantidade de operações do tipo executadas.
+
+Há 2 tipos de gráficos em 'img/':
+    1. O gráfico que mostra a relação do número operações decrease-key por operações operações
+    push, quantificando, aproximadamente, a densidade do tipo de grafo. Unidades adimensionais
+
+    2. Os plots de tempo e variação por tamanho de grafo, separados por tipo de grafo,
+    *FALTANDO COISA AQUI*
+    . Unidades em segundos
+
+
 
 
 ## Discussão
