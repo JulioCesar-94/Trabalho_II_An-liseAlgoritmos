@@ -3,7 +3,7 @@
 ## Ambiente e protocolo
 
 <!-- Descreva máquina, Python, semente, aquecimento e repetições. -->
-O ambiente utilizado nos experimentos possui sistema operacional Linux Ubuntu 24.04.4 LTS, com Python 3.13.12 e semente 2027. Para cada combinação de família de grafo, tamanho e heap, foram realizadas 3 rodadas de aquecimento, descartadas da análise, para garantir a estabilidade das medições, seguidas de 10 repetições cronometradas, das quais foram extraídos a mediana e o desvio mediano.
+O ambiente utilizado nos experimentos possui sistema operacional Linux Ubuntu 24.04.4 LTS, com Python 3.13.12, 8GB de ram, CPU intel core I7 e semente 2027. Para cada combinação de família de grafo, tamanho e heap, foram realizadas 3 rodadas de aquecimento, descartadas da análise, para garantir a estabilidade das medições, seguidas de 10 repetições cronometradas, das quais foram extraídos a mediana e o desvio mediano.
 
 ## Famílias de grafos
 
@@ -90,13 +90,13 @@ Nos grafos vazio e gerador, o heap binário apresentou os menores tempos mediano
 
 <!-- Relacione resultados, operações dominantes e análise assintótica. -->
 
-A efetividade de cada tipo de heap depende altamente da família do tamanho do grafo utilizado
-no algoritom de Djikstra, não necessariamente seguindo a eficiência sugerida pela complexidade
-assintótica. O tipo de família de grafo afeta a distribuição de arestas e, mais importantemente,
-a densidade do grafo gerado, afetando a fração em que operações de decrease_key representam com
-o total de operações de heap.
-Para grafos esparsos como vazios e árvores geradoras, o heap binário é significativamente mais rápido em todos
-os tamanhos
+A efetividade de cada heap depende da família e do tamanho do grafo usado no algoritmo de Dijkstra, e nem sempre segue a eficiência sugerida pela complexidade assintótica. A família de grafo determina a distribuição de arestas e, com isso, a proporção de operações decrease_key entre as operações do heap (Figura DK/Push). Com binário ou binomial, Dijkstra custa O((n+m) log n). Com Fibonacci, custa O(m + n log n) amortizado, pois decrease_key é O(1) amortizado.
+
+Nos grafos esparsos (vazio e gerador), quase não há decrease_key (razão 0 e ≈ 1), e o custo é dominado por push e pop_min. Nesse cenário, o Fibonacci não tem como compensar suas constantes, e o binário, armazenado em uma lista contígua, é o mais rápido em todos os tamanhos, cerca de 3 vezes mais rápido que o binomial no grafo vazio com 4000 nós.
+
+Nos grafos densos (acíclico direcionado e completo), o decrease_key pesa mais (razões ≈ 4,3 e ≈ 5,7), mas os tempos crescem aproximadamente com n²: no grafo completo, quadruplicar n multiplicou o tempo por cerca de 16. Isso indica que o custo dominante é percorrer as arestas, igual para os três heaps, o que explica por que suas curvas quase se sobrepõem.
+
+Por que o melhor limite assintótico do Fibonacci não se traduziu em menor tempo? Provavelmente por três motivos. Primeiro, suas constantes são altas (nós, ponteiros, cortes em cascata e consolidação no pop_min), e em Python cada objeto e chamada custa caro. Segundo, os tamanhos testados são pequenos (log₂ 4000 ≈ 12), então a diferença entre O(log n) e O(1) quase não aparece. Terceiro, o número de decrease_key efetivamente executados é bem menor que m, e a vantagem O(1) atua sobre poucas operações.
 
 
 ## Limitações e ameaças à validade
