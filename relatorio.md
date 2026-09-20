@@ -29,9 +29,9 @@ Famílias:
 
 
 Tamanhos:
-    Foram utilizados grafos formados por 10, 100, 250, 500, 750, 1000, 1500, 2000, 2500 nós para
-    testar os heaps em execuções de Djikstra em diferentes tipos de grafos com diferentes ordens
-    de magnitude de tamanho, verificando complexidades de dijkstra e heaps. Tamanhos escolhidos
+    Foram utilizados grafos formados por 10, 100, 250, 500, 750, 1000, 1500, 2000, 2500, 3000, 3500
+    nós para testar os heaps em execuções de Djikstra em diferentes tipos de grafos com diferentes
+    ordens de magnitude de tamanho, verificando complexidades de dijkstra e heaps. Tamanhos escolhidos
     também são númerosos e uniformemente espaçados o suficiente para formarem gráficos capazes de
     melhor visualizar as diferenças de complexidade.
 
@@ -41,7 +41,7 @@ Tamanhos:
 <!-- Inclua unidades e dispersão. -->
 
 Tabela 'benchmarking.csv' é criada ao executar 'benchmark.py', tabela então transformada em
-gráficos para melhor análise em ''.
+gráficos para melhor análise em 'graficos.py', armazenados em 'img/'.
 Os dados medidos e armazenados foram:
     Tamanho: Medida adimensional, representa a quantidade de arestas geradas no grafo.
     Tempo mediano: Medida em segundos, representa duração mediana dos tempos de execução de determinado grafo, heap, tamanho.
