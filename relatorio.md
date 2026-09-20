@@ -9,6 +9,7 @@ O ambiente em que esse trabalho foi feito os experimentos é numa máquina com s
 
 <!-- Descreva pelo menos três famílias e quatro tamanhos por família. -->
 Famílias:
+
     Grafo completo:
         Todos os nós se ligam a todos os outros através de arestas não direcionadas,
         E ~ V^2
@@ -41,11 +42,14 @@ Tamanhos:
 <!-- Inclua unidades e dispersão. -->
 
 Tabela 'benchmarking.csv' é criada ao executar 'benchmark.py', tabela então transformada em
-gráficos para melhor análise em 'graficos.py', armazenados em 'img/'.
+gráficos para melhor análise em 'graficos.py', armazenados em 'imagens/'.
 
-Há 2 tipos de gráficos em 'img/':
+Há 2 tipos de gráficos em 'imagens/':
+
     1. O gráfico que mostra a relação do número operações decrease-key por operações operações
     push, quantificando, aproximadamente, a densidade do tipo de grafo. Unidades adimensionais
+
+    ![Relação DK-Push](imagens/Relação%20DK-Push.png)
 
     2. Os plots de tempo e variação por tamanho de grafo, separados por tipo de grafo,
     *FALTANDO COISA AQUI*
@@ -79,4 +83,4 @@ operação de heap.
 necessária para executar testes altamente precisos de tempo de execução dos algoritmos,
 havendo pequenas diferenças tempos de execução em diferentes instantes.
 
-3.
+3. Como o benchmark roda no ecossistema do Python (interpretado e gerenciado dinamicamente), instantes em que o Garbage Collector entra em ação causam pausas na execução. Isso justifica os picos e anomalias percebidos na "Variação Mediana" em tamanhos de grafos maiores, figurando como uma ameaça à validade de comparar estruturas de dados puras na linguagem Python.
