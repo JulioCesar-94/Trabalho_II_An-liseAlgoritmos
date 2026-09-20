@@ -94,9 +94,9 @@ A efetividade de cada heap depende da família e do tamanho do grafo usado no al
 
 Nos grafos esparsos (vazio e gerador), quase não há decrease_key (razão 0 e ≈ 1), e o custo é dominado por push e pop_min. Nesse cenário, o Fibonacci não tem como compensar suas constantes, e o binário, armazenado em uma lista contígua, é o mais rápido em todos os tamanhos, cerca de 3 vezes mais rápido que o binomial no grafo vazio com 4000 nós.
 
-Nos grafos densos (acíclico direcionado e completo), o decrease_key pesa mais (razões ≈ 4,3 e ≈ 5,7), mas os tempos crescem aproximadamente com n²: no grafo completo, quadruplicar n multiplicou o tempo por cerca de 16. Isso indica que o custo dominante é percorrer as arestas, igual para os três heaps, o que explica por que suas curvas quase se sobrepõem.
+Nos grafos densos (acíclico direcionado e completo), o decrease_key é mais frequente (razões de [X] e [Y]), mas ainda representa uma fração mínima das arestas: no grafo completo com 4000 nós, foram [DK] operações decrease_key para [m] arestas. O tempo cresce aproximadamente com n² ([Z]× ao quadruplicar n), o que indica que o custo é dominado pela varredura das arestas, comum aos três heaps, e por isso suas curvas ficam próximas.
 
-Por que o melhor limite assintótico do Fibonacci não se traduziu em menor tempo? Provavelmente por três motivos. Primeiro, suas constantes são altas (nós, ponteiros, cortes em cascata e consolidação no pop_min), e em Python cada objeto e chamada custa caro. Segundo, os tamanhos testados são pequenos (log₂ 4000 ≈ 12), então a diferença entre O(log n) e O(1) quase não aparece. Terceiro, o número de decrease_key efetivamente executados é bem menor que m, e a vantagem O(1) atua sobre poucas operações.
+O melhor limite assintótico do Fibonacci não se traduziu em menor tempo por três motivos prováveis. Primeiro, seu ganho O(1) só vale para decrease_key, raro perto de m e do número de pop_min (n operações de custo O(log n) nos três heaps). Segundo, suas constantes são altas (nós, ponteiros, cortes em cascata e consolidação), e em Python cada objeto e chamada custa caro. Terceiro, com n ≤ 4000 (log₂ n ≈ 12), a diferença entre O(log n) e O(1) é pequena.
 
 
 ## Limitações e ameaças à validade
