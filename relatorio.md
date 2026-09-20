@@ -44,15 +44,21 @@ Tamanhos:
 Tabela 'benchmarking.csv' é criada ao executar 'benchmark.py', tabela então transformada em
 gráficos para melhor análise em 'graficos.py', armazenados em 'imagens/'.
 
-Há 2 tipos de gráficos em 'imagens/':
+Há 3 tipos de gráficos em 'imagens/':
 
 ### 1.Relação DK/Push 
 Gráfico adimensional que mostra a razão entre o número de operações de decrease-key pelas operações de push, quantificando a densidade do tipo      de grafo de acordo com as requisições ao heap.
 
 ![Relação DK-Push](imagens/Relação%20DK-Push.png)
 
-### 2.Os Tempo e Dispersão por Família
-Medidos em segundos (s), os gráficos abaixo apresentam o tempo mediano (desempenho absoluto) e a variação mediana (estabilidade) para cada família de grafo:
+### 2.Tempo mediano por tamanho de grafo
+Mede a velocidade e o desempenho absoluto do algoritmo em segundos.
+## Grafo Gerador
+![Tempo mediano (Gerador)](imagens/Tempo%20mediano%20x%20Tamanho%20de%20grafo%20(Gerador).png)
+
+### 3.Variação mediana
+Mede a dispersão estatística e a estabilidade das 10 repetições em segundos.
+
 
 
 
