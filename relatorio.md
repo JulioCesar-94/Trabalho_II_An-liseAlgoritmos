@@ -80,6 +80,7 @@ Mede a dispersão estatística e a estabilidade das 10 repetições em segundos.
 ## Grafo Completo
 ![Variação mediana (Completo)](imagens/Variação%20mediana%20x%20Tamanho%20de%20grafo%20(Completo).png)
 
+Podemos observar que nos grafos vazio e gerador, o heap binário se apresenta como o mais eficiente, possuindo os menores tempos de execução e uma variação muito pequena. No grafo acíclico direcionado, o heap binomial apresenta os menores tempos medianos, enquanto o fibonacci apresenta o pior desempenho. Por fim, no grafo completo, os heaps binomial e fibonacci conseguem superar a eficiência do binário no maior tamanho testado (4000 nós), apresentando menores tempos medianos. Além disso, o gráfico de variação do grafo completo revela um pico agudo de instabilidade para o heap binário nesse exato tamanho, contrastando com a estabilidade mantida pelas outras duas estruturas.
 
 
 
