@@ -114,6 +114,14 @@ class BinaryHeap:
 
 # --------------- Implementação da Heap binomial -----------------------------------------------------
 
+class BinomialHandle:
+    """
+    Cria um indentificador opaco que serve como referênciar o nó atual para facilitar as trocas no método do decrease key
+    Essa classe serve como um ponteiro para um determinado nó binomial
+    """
+    def __init__(self):
+        self.node = None
+
 class BinomailNode:
     """
     Cria a estrutura do nó da arvore binomial: possui os campos da chave(distância) e vértice
@@ -126,6 +134,7 @@ class BinomailNode:
         self.parent = None
         self.left = None
         self.right = None
+        self.handle = BinomialHandle()
 
 
 class BinomialHeap:
@@ -215,64 +224,52 @@ class BinomialHeap:
         Insere um novo nó na heap binomial
         """
         new_element = BinomailNode(priority, vertex)
+        new_element.handle.node = new_element
 
-        tree_B0 = BinomialHeap()
-        tree_B0.head = new_element
-        tree_B0.size = 1
         self.union_trees(new_element)
         self.size += 1
 
-        return new_element
+        return new_element.handle
 
-    def remove_from_tree(self, node: BinomailNode):
-        """
-        Remove um nó de uma árvore
-        """
-        parent = node.parent
-        if not parent:
-            return
 
-        if parent.left == node:
-            parent.left = node.right
-        else:
-            curr = parent.left
-            while curr and curr.right != node:
-                curr = curr.right
-            if curr:
-                curr.right = node.right
-
-        parent.degree -= 1
-        node.parent = None
-        node.right = None
-
-    def decrease_key(self, handle: BinomailNode, new_priority: float) -> None:
+    def decrease_key(self, handle: BinomialHandle, new_priority: float) -> None:
         """
         Diminui a prioridade do nó referenciado por handle
         Lança Value Error caso a prioridade seja maior
         """
-        if new_priority > handle.dist:
+        current = handle.node
+
+        if new_priority > current.dist:
             raise ValueError
 
-        handle.dist = new_priority
-        current = handle
+        current.dist = new_priority        
+        parent = current.parent
 
-        if not handle.parent or handle.dist >= handle.parent.dist:
-            return
+        while parent and current.dist < parent.dist:
+            # Troca os campos importantes do nó binomial (distância e vértice)
+            current.dist, parent.dist = parent.dist, current.dist
+            current.vertex, parent.vertex = parent.vertex, current.vertex
 
-        # Remove o handle atual da árvore
-        self.remove_from_tree(handle)
+            # Troca os ponteiros do pai e do nó atual
+            current.handle, parent.handle = parent.handle, current.handle
 
-        # Reinsere o handle na árvore para atualizar os ponteiros
-        self.union_trees(handle)
+            # Atualiza as referências internas dos nós dentro do BinomialHandle
+            current.handle.node = current
+            parent.handle.node = parent
+
+            current = parent
+            parent = current.parent
+
 
     def pop_min(self) -> tuple[int, float]:
         """
-        Retorna o par da raiz de menor chava
+        Retorna a raiz de menor chave
         Lança IndexError caso a heap esteja vazia
         """
         if self.head == None:
             raise IndexError
 
+        # Busca a menor raiz
         min_node = self.head
         min_prev = None
         prev = self.head
