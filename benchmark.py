@@ -40,7 +40,9 @@ heap_class = ['binary', 'binomial', 'fibonacci']
 tam_grafos = [10, 100, 250, 500, 750, 1000, 1500, 2000, 2500]
 fam_grafos = [['Completo', 'gerar_grafoCompleto'],
               ['Acíclico direcionado', 'gerar_grafoDAG'],
-              ['Gerador', 'gerar_arvoreGeradora']]
+              ['Gerador', 'gerar_arvoreGeradora'],
+              ['Vazia', 'gerar_grafoVazio']
+             ]
 
 
 
@@ -115,6 +117,11 @@ def gerar_arvoreGeradora(n: int):
             V.remove(current)
             current = next
 
+    return graph
+
+
+def gerar_grafoVazio(n: int):
+    graph = [[] for _ in range(n)]
     return graph
 
 
