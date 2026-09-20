@@ -51,7 +51,6 @@ Há 2 tipos de gráficos em 'img/':
     *FALTANDO COISA AQUI*
     . Unidades em segundos
 
-![Relação DK-Push](imagens/Relação%20DK-Push.png)
 
 
 ## Discussão
