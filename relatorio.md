@@ -80,7 +80,6 @@ Mede a dispersão estatística e a estabilidade das 10 repetições em segundos.
 ## Grafo Completo
 ![Variação mediana (Completo)](imagens/Variação%20mediana%20x%20Tamanho%20de%20grafo%20(Completo).png)
 
-Podemos observar que nos grafos vazio e gerador, o heap binário se apresenta como o mais eficiente, possuindo os menores tempos de execução e uma variação muito pequena. No grafo acíclico direcionado, o heap binomial apresenta os menores tempos medianos, enquanto o fibonacci apresenta o pior desempenho. Por fim, no grafo completo, os heaps binomial e fibonacci conseguem superar a eficiência do binário no maior tamanho testado (4000 nós), apresentando menores tempos medianos. Além disso, o gráfico de variação do grafo completo revela um pico agudo de instabilidade para o heap binário nesse exato tamanho, contrastando com a estabilidade mantida pelas outras duas estruturas.
 
 Nos grafos vazio e gerador, o heap binário apresentou os menores tempos medianos em todos os tamanhos testados, com a menor dispersão no grafo gerador. No grafo acíclico direcionado, binário e binomial ficaram praticamente empatados, com leve vantagem do binomial em 4000 nós, enquanto o Fibonacci apresentou o pior desempenho em todos os tamanhos. No grafo completo, os três heaps tiveram tempos muito próximos, com o binário ligeiramente mais lento em 1000 e 4000 nós, diferença pequena diante da dispersão. Nesse mesmo grafo, em 4000 nós, o binário apresentou um pico de variação (~0,17 s), contrastando com a dispersão das outras duas estruturas (~0,01 s).
 
@@ -97,6 +96,8 @@ Nos grafos esparsos (vazio e gerador), quase não há decrease_key (razão 0 e �
 Nos grafos densos (acíclico direcionado e completo), o decrease_key é mais frequente (razões de [X] e [Y]), mas ainda representa uma fração mínima das arestas: no grafo completo com 4000 nós, foram [DK] operações decrease_key para [m] arestas. O tempo cresce aproximadamente com n² ([Z]× ao quadruplicar n), o que indica que o custo é dominado pela varredura das arestas, comum aos três heaps, e por isso suas curvas ficam próximas.
 
 O melhor limite assintótico do Fibonacci não se traduziu em menor tempo por três motivos prováveis. Primeiro, seu ganho O(1) só vale para decrease_key, raro perto de m e do número de pop_min (n operações de custo O(log n) nos três heaps). Segundo, suas constantes são altas (nós, ponteiros, cortes em cascata e consolidação), e em Python cada objeto e chamada custa caro. Terceiro, com n ≤ 4000 (log₂ n ≈ 12), a diferença entre O(log n) e O(1) é pequena.
+
+Em síntese, o heap binário foi o mais eficiente nos grafos esparsos, onde há poucos decrease_key, enquanto nos grafos densos os três heaps ficaram próximos, pois o custo foi dominado pela varredura das arestas. O melhor limite assintótico do heap de Fibonacci não se traduziu em menor tempo nos tamanhos testados, e a melhor escolha de heap depende da família de grafo e das constantes da implementação, não só da complexidade.
 
 
 ## Limitações e ameaças à validade
