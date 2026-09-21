@@ -30,24 +30,25 @@ Famílias:
 
 
 Tamanhos:
-    Foram utilizados grafos formados por 10, 100, 250, 500, 750, 1000, 1500, 2000, 2500, 3000, 3500
-    nós para testar os heaps em execuções de Djikstra em diferentes tipos de grafos com diferentes
-    ordens de magnitude de tamanho, verificando complexidades de dijkstra e heaps. Tamanhos escolhidos
-    também são númerosos e uniformemente espaçados o suficiente para formarem gráficos capazes de
-    melhor visualizar as diferenças de complexidade.
+    Foram utilizados grafos formados por 1000, 2500, 3000, 4000 nós para testar os heaps em execuções
+    de Djikstra em diferentes tipos de grafos com tamanhos significativamente diferentes. Essa diferença
+    de tamanhos é útil para analisar as diferenças de comportamento das complexidades assintóticas dos
+    heaps.
+
 
 
 ## Resultados
 
 <!-- Inclua unidades e dispersão. -->
 
-Tabela 'benchmarking.csv' é criada ao executar 'benchmark.py', tabela então transformada em
-gráficos para melhor análise em 'graficos.py', armazenados em 'imagens/'.
+Tabela 'benchmarking.csv' é criada ao executar 'benchmark.py', então sendo transformada em
+gráficos para melhor análise por 'graficos.py', armazenados em 'imagens/'.
 
 Há 3 tipos de gráficos em 'imagens/':
 
 ### 1.Relação DK/Push 
-Gráfico adimensional que mostra a razão entre o número de operações de decrease-key pelas operações de push, quantificando a densidade do tipo      de grafo de acordo com as requisições ao heap.
+Gráfico adimensional que mostra a razão entre o número de operações de decrease-key pelas operações de push,quantificando, aproximadamente, a densidade do tipo de grafo de acordo com as requisições ao heap. Nota-se que
+o número de operações de push e pop são ambos iguais ao número de nós.
 
 ![Relação DK-Push](imagens/Relação%20DK-Push.png)
 
@@ -81,7 +82,7 @@ Mede a dispersão estatística e a estabilidade das 10 repetições em segundos.
 ![Variação mediana (Completo)](imagens/Variação%20mediana%20x%20Tamanho%20de%20grafo%20(Completo).png)
 
 
-Nos grafos vazio e gerador, o heap binário apresentou os menores tempos medianos em todos os tamanhos testados, com a menor dispersão no grafo gerador. No grafo acíclico direcionado, binário e binomial ficaram praticamente empatados, com leve vantagem do binomial em 4000 nós, enquanto o Fibonacci apresentou o pior desempenho em todos os tamanhos. No grafo completo, os três heaps tiveram tempos muito próximos, com o binário ligeiramente mais lento em 1000 e 4000 nós, diferença pequena diante da dispersão. Nesse mesmo grafo, em 4000 nós, o binário apresentou um pico de variação (~0,17 s), contrastando com a dispersão das outras duas estruturas (~0,01 s).
+Nos grafos vazio e gerador, o heap binário apresentou os menores tempos medianos em todos os tamanhos testados, com a menor dispersão no grafo gerador. No grafo acíclico direcionado, binário e binomial tem tempo de execução próximo, com leve vantagem do heap binomial em 4000 nós, enquanto o heap Fibonacci apresentou o pior desempenho em todos os tamanhos. No grafo completo, os três heaps tiveram tempos muito próximos, com o binário ligeiramente mais lento em 1000 e 4000 nós, diferença pequena diante da dispersão. Nesse mesmo grafo, em 4000 nós, o binário apresentou um pico de variação (~0,17 s), contrastando com a dispersão das outras duas estruturas (~0,01 s).
 
 
 
@@ -89,28 +90,29 @@ Nos grafos vazio e gerador, o heap binário apresentou os menores tempos mediano
 
 <!-- Relacione resultados, operações dominantes e análise assintótica. -->
 
-A efetividade de cada heap depende da família e do tamanho do grafo usado no algoritmo de Dijkstra, e nem sempre segue a eficiência sugerida pela complexidade assintótica. A família de grafo determina a distribuição de arestas e, com isso, a proporção de operações decrease_key entre as operações do heap (Figura DK/Push). Com binário ou binomial, Dijkstra custa O((n+m) log n). Com Fibonacci, custa O(m + n log n) amortizado, pois decrease_key é O(1) amortizado.
+A efetividade de cada heap depende da família e do tamanho do grafo usado no algoritmo de Dijkstra, e nem sempre segue a eficiência sugerida pela complexidade assintótica. A família de grafo determina a distribuição e densidade de arestas e, com isso, a proporção de operações decrease_key entre todas as operações do heap (Figura DK/Push). Com heaps binário ou binomial, Dijkstra tem complexidade O((n+m) log n). Com heap Fibonacci, complexidade O(m + n log n) amortizado, pois decrease_key é O(1) amortizado.
 
-Nos grafos vazio e gerador, quase não há decrease_key (razão 0 e ≈ 1), e o custo é dominado por push e pop_min. Nesse cenário, o Fibonacci não tem como compensar suas constantes, e o binário, armazenado em uma lista contígua, é o mais rápido em todos os tamanhos, cerca de 3 vezes mais rápido que o binomial no grafo vazio com 4000 nós.
+Nos grafos vazio e gerador, há menor quantidade de operações decrease_key (razão DK/push 0 e ≈ 1), com número de operações predominantemente de push e pop_min. Nesse cenário, o heap Fibonacci não consegue compensar seu overhead constante através da vantagem de complexidade assintótica, enquanto o binário, armazenado em uma lista contígua, é o mais rápido em todos os tamanhos, cerca de 3 vezes mais rápido que o binomial no grafo vazio com 4000 nós.
 
-Nos grafos Acíclico Direcionado e Completo, o decrease_key pesa mais (razões ≈ 4,3 e ≈ 5,7 respectivamente), mas os tempos crescem aproximadamente com n²: no grafo completo, quadruplicar n multiplicou o tempo por cerca de 16. Isso indica que o custo dominante é percorrer as arestas, igual para os três heaps, o que explica por que suas curvas quase se sobrepõem.
+Nos grafos Acíclico Direcionado e Completo, a operação decrease_key é mais predominante (razões ≈ 4,3 e ≈ 5,7 respectivamente), mas os tempos de execução crescem aproximadamente em n²: no grafo completo, quadruplicar n multiplicou o tempo por aproximadamente 16. Isso indica que o custo dominante é percorrer as arestas, igual para os três heaps, o que explica por que suas curvas quase se sobrepõem.
 
-O melhor limite assintótico do Fibonacci não se traduziu no menor tempo pois suas constantes operacionais são altas, os tamanhos testados não são grandes o suficiente para o crescimento logarítmico pesar, e o número de operações decrease_key é bem menor que a quantidade de arestas (m), fazendo com que a vantagem teórica de O(1) atue sobre uma fração muito pequena do algoritmo.
+O melhor limite assintótico do Fibonacci não se traduziu no menor tempo pois suas constantes operacionais são altas, os tamanhos testados não são grandes o suficiente para que o crescimento logarítmico seja justificado, e o número de operações decrease_key é bem menor que a quantidade de arestas (m), fazendo com que a vantagem teórica de O(1) atue sobre uma fração muito pequena do algoritmo.
 
-Em síntese, o heap binário foi o mais eficiente nos grafos esparsos, onde há poucos decrease_key, enquanto nos grafos densos os três heaps ficaram próximos, pois o custo foi dominado pela varredura das arestas. O melhor limite assintótico do heap de Fibonacci não se traduziu em menor tempo nos tamanhos testados, e a melhor escolha de heap depende da família de grafo e das constantes da implementação, não só da complexidade.
+Em síntese, o heap binário foi o mais eficiente nos grafos esparsos, onde há menor quantidade relativa de decrease_key, enquanto nos grafos densos os três heaps ficaram próximos, pois o custo foi dominado pela varredura das arestas. O melhor limite assintótico do heap de Fibonacci não se traduziu em menor tempo nos tamanhos testados, e a melhor escolha de heap depende da família de grafo e das constantes da implementação, não só da complexidade.
 
 
 ## Limitações e ameaças à validade
 
 1. Implementação usada de Grafos Acíclicos Direcionados, Erdős–Rényi G(n, p) Model, é um
-algoritmo estocástico que requer como argumentos uma constante (p | 0 < p < 1), desse modo,
+algoritmo estocástico que requer como argumentos uma probabilidae constante (p | 0 < p < 1), desse modo,
 seu comportamento tem alta dependência dos valores de p e de semente usados, podendo, em
 casos extremos, gerar nenhuma aresta ou metade de um grafo completo, variando então o tempo
-de execução do algoritmo de Djikstra ao alterar número e ordem de chamadas de cada tipo
+de execução do algoritmo de Djikstra radicalmente ao alterar número de chamadas de cada tipo
 operação de heap.
 
 2. Testes foram executados em computadores pessoais e não especializados em consistência
 necessária para executar testes altamente precisos de tempo de execução dos algoritmos,
-havendo pequenas diferenças tempos de execução em diferentes instantes.
+havendo pequenas diferenças tempos de execução em diferentes instantes devido a variação
+de recursos alocados ao benchmark.
 
-3. Como o benchmark roda no ecossistema do Python (interpretado e gerenciado dinamicamente), instantes em que o Garbage Collector entra em ação causam pausas na execução. Isso justifica os picos e anomalias percebidos na "Variação Mediana" em tamanhos de grafos maiores, figurando como uma ameaça à validade de comparar estruturas de dados puras na linguagem Python.
+3. Como o benchmark foi executado no ecossistema do Python (interpretado e gerenciado dinamicamente), instantes em que o Garbage Collector entra em ação causam pausas na execução. Isso justifica os picos e anomalias percebidos na "Variação Mediana" em tamanhos de grafos maiores, figurando como uma ameaça à validade de comparar estruturas de dados puras na linguagem Python.
